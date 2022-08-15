@@ -56,4 +56,4 @@ LEFT JOIN workbench.location_region l on k.region_id = l.id
 	and a.is_approved = 'True'
 	and a.is_rejected = 'false'
 	and a.is_deleted = 'false'
-	and d.tenant_id = 7
+	and d.tenant_id = 7 -- our tenant
