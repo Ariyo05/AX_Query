@@ -1,4 +1,4 @@
-select b.name warehouse, d.code, d.name prod, f.name as location,a.source, a.transaction_type, a.units, a.units_before
+select a.created, a.updated, b.name warehouse, d.code, d.name prod, f.name as location,a.source, a.transaction_type, a.units, a.units_before
 ,a.units_after, a.lien_units_before, a.lien_units_after
 ,a.total_units_before, a.total_units_after,
  a.extra_note
@@ -12,6 +12,5 @@ left join workbench.location_baselocation f on e.base_location_id = f.id
 left join workbench.location_state g on f.state_id = g.id
 left join workbench.location_region h on g.region_id = h.id
 where b.tenant_id = 7
---and d.code = 'Halakat'
+and d.code = 'CPP_HKT'
 and a.is_deleted = 'false'
-limit 10
