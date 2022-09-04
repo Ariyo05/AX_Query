@@ -12,12 +12,15 @@ SELECT
 	   		when a.bvn = '' then 'no_bvn' else 'nil' end) as bvn_state 
     , (Case when a.passport_type <> '' then 'have_id' 
 	   		when a.passport_type = '' then 'no_id' else 'nil' end) as id_state 
-    ,z.crop_list
+    ,z.crop_code
+	,z.crop_name
+	,z.crop_type
 	,l.name AS warehouse_location
 	,m.name AS warehouse_state
 	,o.name as region
 	,q.name as feo_name
 	,q.code as feo_code
+	,r.name
 FROM workbench.crm_farmer a
 LEFT JOIN workbench.workbench_warehouse d ON a.warehouse_id = d.id
 LEFT JOIN workbench.location_location k ON d.location_id = k.id
@@ -25,6 +28,7 @@ LEFT JOIN workbench.location_baselocation l ON k.base_location_id = l.id
 LEFT JOIN workbench.location_state m ON l.state_id = m.id
 LEFT JOIN workbench.location_region o ON m.region_id = o.id  
 left join workbench.workbench_cell q on a.cell_id = q.id
+left join workbench.workbench_cooperative r on a.cooperative_id = r.id
 LEFT JOIN 
 	(select count(a.farmer_id) as collect_loan, b.folio_id, a.repayment_value, a.total_loan_value, a.project_id, a.warehouse_id 
 from workbench.loan_loan a
@@ -33,7 +37,9 @@ group by a.farmer_id, b.folio_id, a.repayment_value, a.total_loan_value, a.proje
 	 ) as p on a.folio_id = p.folio_id
 LEFT JOIN (
 	SELECT DISTINCT a.farmer_id
-		,string_agg(c.name, ', ') AS crop_list
+		,string_agg(c.code, ', ') AS crop_code
+		,string_agg(c.name, ', ') AS crop_name
+		,string_agg(c.product_type, ', ') AS crop_type
 	FROM workbench.crm_farmer_crop_type a
 	INNER JOIN workbench.inventory_item b ON a.item_id = b.id
 	INNER JOIN workbench.workbench_product c ON b.product_id = c.id
