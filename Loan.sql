@@ -1,12 +1,5 @@
-
 SELECT 
--- count(*) cout
--- ,sum(amount_repaid) repaid
--- ,sum(total_loan_value)
--- , count(distinct c.code) project
--- ,sum(a.hectare) land
-	 c.created as project_start_date
-	,extract(year from c.created) as project_start_year
+	 a.created 
 	,a.ln_id
 	,a.hectare
 	,a.total_loan_value
@@ -40,6 +33,9 @@ SELECT
 	,g.name AS cell
 	,g.code AS cell_code
 ,l.name as region
+,b.coordinates
+,b.phone
+,b.gender
 
 FROM workbench.loan_loan a
 LEFT JOIN workbench.crm_farmer b ON a.farmer_id = b.id
